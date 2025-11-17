@@ -6,6 +6,7 @@ public class AIController : MonoBehaviour
     public NavMeshAgent Agent { get; private set; }
     public AIAnimationController aiAnimationController { get; private set; }
     public StateMachine StateMachine { get; private set; }
+    private Rigidbody physicsBody;
     // public Animator Animator { get; private set; } // Not needed since we're not using animations
     public Transform[] Waypoints;
     public Transform Player;
@@ -13,6 +14,8 @@ public class AIController : MonoBehaviour
     public float AttackRange = 2f; // New attack range variable
     public LayerMask PlayerLayer;
     public StateType currentState;
+    public Vector3 LastKnownPlayerPosition { get; private set; }
+    private bool hasLastKnownPlayerPosition;
 
     [Header("Attack Settings")]
     public Transform leftHandTransform;
@@ -24,12 +27,29 @@ public class AIController : MonoBehaviour
     public LayerMask obstacleMask;
     public LayerMask playerMask;
 
-    [Header("Vision Stability")]
+    [Header("Vision Behavior")]
+    public bool useVisionPersistence = false;
     public float visionPersistence = 0.5f; // seconds to keep seeing after losing sight
     private float lastSeenTime = -999f;
 
+    [Header("Stuck Handling")]
+    public float stuckSpeedThreshold = 0.05f;
+    public float stuckDuration = 2f;
+    private float stuckTimer;
+
 
     // Add State Machine code Here
+    void Awake()
+    {
+        physicsBody = GetComponent<Rigidbody>();
+        if (physicsBody != null)
+        {
+            physicsBody.isKinematic = true;
+            physicsBody.useGravity = false;
+            physicsBody.constraints = RigidbodyConstraints.FreezeRotation;
+        }
+    }
+
     void Start()
     {
         Agent = GetComponent<NavMeshAgent>();
@@ -41,6 +61,7 @@ public class AIController : MonoBehaviour
         StateMachine.AddState(new PatrolState(this));
         StateMachine.AddState(new ChaseState(this));
         StateMachine.AddState(new AttackState(this)); // Add the new AttackState
+        StateMachine.AddState(new SearchState(this));
 
         StateMachine.TransitionToState(StateType.Idle);
     }
@@ -49,6 +70,7 @@ public class AIController : MonoBehaviour
     {
         StateMachine.Update();
         currentState = StateMachine.GetCurrentStateType();
+        MonitorStuck();
     }
 
 
@@ -70,13 +92,13 @@ public class AIController : MonoBehaviour
         // Check field of view
         if (angleToPlayer > viewAngle / 2f)
         {
-            return Time.time - lastSeenTime < visionPersistence;
+            return useVisionPersistence && Time.time - lastSeenTime < visionPersistence;
         }
 
         // Check distance
         if (distanceToPlayer > viewDistance)
         {
-            return Time.time - lastSeenTime < visionPersistence;
+            return useVisionPersistence && Time.time - lastSeenTime < visionPersistence;
         }
 
         // Perform raycast
@@ -86,15 +108,20 @@ public class AIController : MonoBehaviour
             if (hit.transform == Player)
             {
                 lastSeenTime = Time.time;
+                RememberPlayerPosition(hit.point);
                 return true;
             }
         }
     
 
         // If recently seen, still count as visible
-        bool recentlySeen = Time.time - lastSeenTime < visionPersistence;
+        if (useVisionPersistence)
+        {
+            bool recentlySeen = Time.time - lastSeenTime < visionPersistence;
+            return recentlySeen;
+        }
 
-        return recentlySeen;
+        return false;
     }
 
     public bool CheckHandsCollision(out GameObject collidedObject, string Tag)
@@ -127,6 +154,78 @@ public class AIController : MonoBehaviour
     {
         float distanceToPlayer = Vector3.Distance(transform.position, Player.position);
         return distanceToPlayer <= AttackRange;
+    }
+
+    public void RememberPlayerPosition(Vector3 position)
+    {
+        LastKnownPlayerPosition = position;
+        hasLastKnownPlayerPosition = true;
+    }
+
+    public bool TryGetLastKnownPlayerPosition(out Vector3 position)
+    {
+        position = LastKnownPlayerPosition;
+        return hasLastKnownPlayerPosition;
+    }
+
+    public void ClearLastKnownPlayerPosition()
+    {
+        hasLastKnownPlayerPosition = false;
+    }
+
+    private void MonitorStuck()
+    {
+        if (Agent == null || Agent.pathPending)
+        {
+            stuckTimer = 0f;
+            return;
+        }
+
+        bool barelyMoving = Agent.velocity.magnitude <= stuckSpeedThreshold;
+        bool stillFarFromGoal = Agent.remainingDistance > Agent.stoppingDistance + 0.1f;
+
+        if (barelyMoving && stillFarFromGoal)
+        {
+            stuckTimer += Time.deltaTime;
+            if (stuckTimer >= stuckDuration)
+            {
+                HandleStuck();
+            }
+        }
+        else
+        {
+            stuckTimer = 0f;
+        }
+    }
+
+    private void HandleStuck()
+    {
+        stuckTimer = 0f;
+        Agent.ResetPath();
+        transform.Rotate(0f, 180f, 0f);
+
+        if (StateMachine == null)
+        {
+            return;
+        }
+
+        StateType current = StateMachine.GetCurrentStateType();
+        if (current == StateType.Chase || current == StateType.Search)
+        {
+            if (TryGetLastKnownPlayerPosition(out Vector3 lastPosition))
+            {
+                Agent.destination = lastPosition;
+                StateMachine.TransitionToState(StateType.Search);
+            }
+            else
+            {
+                StateMachine.TransitionToState(StateType.Patrol);
+            }
+        }
+        else if (current == StateType.Patrol)
+        {
+            StateMachine.TransitionToState(StateType.Patrol);
+        }
     }
 
     private void OnDrawGizmosSelected()
