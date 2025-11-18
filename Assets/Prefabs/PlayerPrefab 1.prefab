@@ -1654,9 +1654,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6799155194134901007}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f188286ef6f4de438461e99982ba925, type: 3}
+  m_Script: {fileID: 11500000, guid: d66ca2198c13be84b8ca96c14f03708f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement 
   baseWalkSpeed: 5
   baseRunSpeed: 8
   rotationSpeed: 10

@@ -23,6 +23,13 @@ public class IdleState : IState
 
     public void Execute()
     {
+        // Check for player vision first
+        if (aiController.CanSeePlayer())
+        {
+            aiController.StateMachine.TransitionToState(StateType.Chase);
+            return;
+        }
+
         idleTimer += Time.deltaTime;
         if (idleTimer >= idleDuration)
         {
