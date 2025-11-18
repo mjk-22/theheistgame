@@ -27,7 +27,6 @@ public class PlayerController : MonoBehaviour
         // Move the character forward/backward
         if (controller.isGrounded)
         {
-            // Set move direction forward
             moveDirection = transform.forward * vertical * moveSpeed;
         }
 

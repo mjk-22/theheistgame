@@ -20,7 +20,7 @@ public class PlayerAnimatorController : MonoBehaviour
 
     public void Update()
     {
-        animator.SetFloat("CharacterSpeed", rb.linearVelocity.magnitude);
+        animator.SetFloat("CharacterSpeed", rb.velocity.magnitude);
         animator.SetBool("IsGrounded", movement.IsGrounded);
         animator.SetBool("IsCrouching", movement.IsCrouching);
        

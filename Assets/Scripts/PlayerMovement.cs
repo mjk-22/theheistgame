@@ -55,7 +55,8 @@ public class PlayerMovement : MonoBehaviour
     /// <summary>
     /// Checks if the player is currently holding the "Run" button.
     /// </summary>
-    private bool IsRunning => Input.GetButton("Run");
+    //private bool IsRunning => Input.GetButton("Run");
+    private bool IsRunning => Input.GetKey(KeyCode.LeftShift);
 
     // ============================== Unity Built-in Methods ==============================
 
@@ -234,11 +235,11 @@ public class PlayerMovement : MonoBehaviour
         // Preserve the current Y velocity to maintain gravity effects
         Vector3 newVelocity = new Vector3(
             moveDirection.x * speed * speedMultiplier, 
-            rb.linearVelocity.y, // Keep the existing Y velocity for jumping & gravity
+            rb.velocity.y, // Keep the existing Y velocity for jumping & gravity
             moveDirection.z * speed * speedMultiplier
         );
 
         // Apply the new velocity directly
-        rb.linearVelocity = newVelocity;
+        rb.velocity = newVelocity;
     }
 }
