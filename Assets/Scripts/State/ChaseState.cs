@@ -19,7 +19,14 @@ public class ChaseState : IState
     {
         if (!aiController.CanSeePlayer())
         {
-            aiController.StateMachine.TransitionToState(StateType.Patrol);
+            if (aiController.TryGetLastKnownPlayerPosition(out _))
+            {
+                aiController.StateMachine.TransitionToState(StateType.Search);
+            }
+            else
+            {
+                aiController.StateMachine.TransitionToState(StateType.Patrol);
+            }
             return;
         }
         if (aiController.IsPlayerInAttackRange())
