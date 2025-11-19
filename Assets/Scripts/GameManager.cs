@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // health hud
+    // health hud modify it later si that the player die go to lose screen when caught by enemy
     public void TakeDamage(int amount)
     {
         currentHealth -= amount;
