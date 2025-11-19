@@ -24,6 +24,7 @@ public class AIController : MonoBehaviour
     public LayerMask playerMask;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
     [Header("Vision Stability")]
     public float visionPersistence = 0.5f; // seconds to keep seeing after losing sight
@@ -32,6 +33,11 @@ public class AIController : MonoBehaviour
     public bool useVisionPersistence = true;
     public float visionPersistence = 5f; // seconds to keep seeing after losing sight (increased for more persistence)
 >>>>>>> b175fb3 (Pulled from main)
+=======
+    [Header("Vision Behavior")]
+    public bool useVisionPersistence = true;
+    public float visionPersistence = 5f; // seconds to keep seeing after losing sight (increased for more persistence)
+>>>>>>> Stashed changes
 =======
     [Header("Vision Behavior")]
     public bool useVisionPersistence = true;
@@ -87,6 +93,7 @@ public class AIController : MonoBehaviour
         Vector3 directionToPlayer = (targetPosition - eyePosition).normalized;
         float distanceToPlayer = Vector3.Distance(eyePosition, targetPosition);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
         float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayer);
 
@@ -99,6 +106,10 @@ public class AIController : MonoBehaviour
         
         // With 360 degree vision, we don't need to check angle - just distance and line of sight
 >>>>>>> b175fb3 (Pulled from main)
+=======
+        
+        // With 360 degree vision, we don't need to check angle - just distance and line of sight
+>>>>>>> Stashed changes
 =======
         
         // With 360 degree vision, we don't need to check angle - just distance and line of sight
