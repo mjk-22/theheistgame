@@ -17,13 +17,12 @@ public class AIController : MonoBehaviour
     public Vector3 LastKnownPlayerPosition { get; private set; }
     private bool hasLastKnownPlayerPosition;
 
-    [Header("Attack Settings")]
     public Transform leftHandTransform;
     public Transform rightHandTransform;
-    [Header("Vision Settings")]
+
     public float viewDistance = 10f;
     public float viewAngle = 360f; // 360 degrees - full circle vision
-    public float eyeHeight = 1.6f; // where the AI "looks" from
+    public float eyeHeight = 1.6f; // where the AI looks from
     public LayerMask obstacleMask;
     public LayerMask playerMask;
 
