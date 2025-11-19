@@ -29,10 +29,35 @@ public class ChaseState : IState
     public void Execute()
     {
         if (aiController.Agent == null)
+<<<<<<< Updated upstream
+=======
         {
             return;
         }
 
+        bool canSeePlayer = aiController.CanSeePlayer();
+        
+        // Update last seen time if we can see the player
+        if (canSeePlayer && aiController.Player != null)
+        {
+            lastSeenTime = Time.time;
+            wasSeeingPlayer = true;
+            // Update last chase position while we can see the player
+            lastChasePosition = aiController.Player.position;
+        }
+
+        // Check if we should continue chasing after losing sight
+        float timeSinceLastSeen = Time.time - lastSeenTime;
+        bool shouldContinueChasing = wasSeeingPlayer && (timeSinceLastSeen < chasePersistenceDuration);
+        
+        // If we can't see the player and persistence time has expired, transition to search
+        if (!canSeePlayer && !shouldContinueChasing)
+>>>>>>> Stashed changes
+        {
+            return;
+        }
+
+<<<<<<< Updated upstream
         bool canSeePlayer = aiController.CanSeePlayer();
         
         // Update last seen time if we can see the player
@@ -55,6 +80,8 @@ public class ChaseState : IState
             return;
         }
 
+=======
+>>>>>>> Stashed changes
         // If player is in attack range, attack
         if (canSeePlayer && aiController.IsPlayerInAttackRange())
         {
