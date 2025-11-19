@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     //[SerializeField] private KeyCode crouchKey = KeyCode.C;
 
     [SerializeField] private float crouchSpeedMultiplier = 0.5f;       // Move slower
-    [SerializeField] private float crouchHeight = 0.6f;                // Height while crouched
+    //[SerializeField] private float crouchHeight = 0.6f;                // Height while crouched
     private float originalHeight = 1f;                                
     private bool isCrouching = false;       
     public bool IsCrouching => isCrouching;
