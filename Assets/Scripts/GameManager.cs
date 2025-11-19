@@ -76,7 +76,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void AddScore(int amount)
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
