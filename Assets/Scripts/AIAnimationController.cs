@@ -28,11 +28,25 @@ public class AIAnimationController : MonoBehaviour
 
     void HitPlayer() // Attack Animation Event to check if the player his hit
     {
+        if (aiController == null)
+        {
+            return;
+        }
+
         GameObject objectHit;
         if (aiController.CheckHandsCollision(out objectHit, "Player"))
         {
-
-            SceneManager.LoadScene(0);
+            // Try to respawn using GameManager if available
+            GameManager gm = GameManager.Instance != null ? GameManager.Instance : FindObjectOfType<GameManager>();
+            if (gm != null)
+            {
+                gm.GameOver();
+            }
+            else
+            {
+                // Fallback: reload scene (same as reference code)
+                SceneManager.LoadScene("LoseScreen");
+            }
         }
     }
 

@@ -4,7 +4,6 @@ public class SearchState : IState
 {
     private readonly AIController aiController;
     private readonly float searchDuration = 4f;
-    private readonly float lookAroundSpeed = 120f;
     private float searchTimer;
     private bool movingToLastKnownPoint;
 
@@ -44,14 +43,20 @@ public class SearchState : IState
             if (!aiController.Agent.pathPending && aiController.Agent.remainingDistance <= aiController.Agent.stoppingDistance)
             {
                 movingToLastKnownPoint = false;
-                aiController.Agent.isStopped = true;
+                // Instead of rotating, just wait a bit then go back to patrol
+                searchTimer = 0f;
             }
-            return;
+            else
+            {
+                // Keep moving to last known position
+                return;
+            }
         }
 
+        // Wait briefly at the last known position, then return to patrol
+        // No 360 rotation - just a brief pause
         searchTimer += Time.deltaTime;
-        aiController.transform.Rotate(Vector3.up, lookAroundSpeed * Time.deltaTime);
-
+        
         if (searchTimer >= searchDuration)
         {
             aiController.Agent.isStopped = false;
