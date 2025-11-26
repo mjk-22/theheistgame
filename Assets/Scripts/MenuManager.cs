@@ -4,7 +4,16 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class MenuManager : MonoBehaviour
 {
-     public void StartGame(string levelName)
+    public void Start()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        if (GameManager.Instance != null )
+        {
+            Destroy(GameManager.Instance);
+        }
+    }
+    public void StartGame(string levelName)
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(levelName);
