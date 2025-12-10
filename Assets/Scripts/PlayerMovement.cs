@@ -31,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
 
     // ============================== Private Variables ==============================
     private Rigidbody rb; // Reference to the Rigidbody component
-    private Transform cameraTransform; // Reference to the camera's transform
+    [SerializeField] private Transform cameraTransform; // Reference to the camera's transform (can be assigned manually)
 
     // Input variables
     private float moveX; // Stores horizontal movement input (A/D or Left/Right Arrow)
@@ -68,6 +68,18 @@ public class PlayerMovement : MonoBehaviour
     }
 
     /// <summary>
+    /// Called after Awake, used as a fallback to find camera if it wasn't available in Awake.
+    /// </summary>
+    private void Start()
+    {
+        // Ensure camera is found (in case it wasn't available in Awake)
+        if (cameraTransform == null)
+        {
+            FindCamera();
+        }
+    }
+
+    /// <summary>
     /// Called every frame, used to register player input.
     /// </summary>
     private void Update()
@@ -96,13 +108,41 @@ public class PlayerMovement : MonoBehaviour
         rb.interpolation = RigidbodyInterpolation.Interpolate; // Smooth physics interpolation
         originalHeight = transform.localScale.y;
 
-        // Assign the main camera if available
-        if (Camera.main)
-            cameraTransform = Camera.main.transform;
+        // Find camera if not manually assigned
+        FindCamera();
 
         // Lock and hide the cursor for better gameplay control
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
+    }
+
+    /// <summary>
+    /// Finds and assigns the camera reference. Tries multiple methods to ensure camera is found.
+    /// </summary>
+    private void FindCamera()
+    {
+        // If camera is already assigned manually, use it
+        if (cameraTransform != null)
+            return;
+
+        // Try to find the main camera
+        if (Camera.main != null)
+        {
+            cameraTransform = Camera.main.transform;
+            return;
+        }
+
+        // Fallback: Find any camera in the scene
+        Camera foundCamera = FindObjectOfType<Camera>();
+        if (foundCamera != null)
+        {
+            cameraTransform = foundCamera.transform;
+            //Debug.LogWarning("PlayerMovement: MainCamera not found, using first available camera.");
+        }
+        else
+        {
+            //Debug.LogError("PlayerMovement: No camera found! Movement will be in world space.");
+        }
     }
 
     // ============================== Input Handling ==============================
@@ -163,8 +203,14 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private void CalculateMoveDirection()
     {
+        // Try to find camera if it's still null (runtime fallback)
+        if (cameraTransform == null)
+        {
+            FindCamera();
+        }
+
         // If the camera is not assigned, move based on world space
-        if (!cameraTransform)
+        if (cameraTransform == null)
         {
             moveDirection = new Vector3(moveX, 0, moveZ).normalized;
         }
