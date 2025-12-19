@@ -13,10 +13,10 @@ public class MenuManager : MonoBehaviour
             Destroy(GameManager.Instance);
         }
     }
-    public void StartGame(string levelName)
+    public void StartGame()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene(levelName);
+        SceneManager.LoadScene("Level1");
     }
 
     public void QuitGame()
