@@ -1,117 +1,112 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    // items needed for full score
+    public int itemsNeededForLevel = 5;
     public Text scoreText;
-    private int score = 0;
-    
-    [Header("Respawn Settings")]
-    public Transform playerSpawnPoint; // Assign in inspector, or it will use player's starting position
-    private Vector3 defaultSpawnPosition;
-    private Quaternion defaultSpawnRotation;
-    private GameObject playerObject;
+    public Text itemsText;
+
+    // items we have
+    private HashSet<ItemType> ownedItems = new HashSet<ItemType>();
+
+    // how many items we picked up in total 
+    private int itemsCollected = 0;
+   
+    public GameObject pauseMenuUI;   
+    private bool isPaused = false;
+
 
     private void Awake()
     {
-        // Enforce one instance
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
         Instance = this;
+        DontDestroyOnLoad(gameObject);
+        UpdateInventoryUI();
     }
 
-    private void Start()
+    private void Update()
     {
-        // Find player and store spawn position
-        InitializeSpawnPosition();
-    }
-
-    private void InitializeSpawnPosition()
-    {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            playerObject = player;
-            if (playerSpawnPoint != null)
-            {
-                defaultSpawnPosition = playerSpawnPoint.position;
-                defaultSpawnRotation = playerSpawnPoint.rotation;
-            }
-            else
-            {
-                // Use player's starting position as spawn point
-                defaultSpawnPosition = player.transform.position;
-                defaultSpawnRotation = player.transform.rotation;
-            }
+            TogglePause();
         }
     }
 
-    public void AddScore(int amount)
+    //inventory
+    public void RegisterItemPickup(ItemType itemType)
     {
-        score += amount;
-        UpdateUI();
+        ownedItems.Add(itemType);
+        itemsCollected++;
+
+        UpdateInventoryUI();
     }
 
-    private void UpdateUI()
+    public bool HasItem(ItemType itemType)
+    {
+        return ownedItems.Contains(itemType);
+    }
+
+    public float GetScorePercent()
+    {
+        if (itemsNeededForLevel <= 0) return 0f;
+        return (itemsCollected / (float)itemsNeededForLevel) * 100f;
+    }
+
+    private void UpdateInventoryUI()
     {
         if (scoreText != null)
         {
-            scoreText.text = $"Score: {score}";
+            scoreText.text = $"Score: {itemsCollected} / {itemsNeededForLevel}";
+        }
+
+        if (itemsText != null)
+        {
+            itemsText.text = $"Items: {itemsCollected}";
         }
     }
-
-    public void RespawnPlayer()
+ 
+    // pause menu 
+    public void TogglePause()
     {
-        // Initialize spawn position if not set
-        if (defaultSpawnPosition == Vector3.zero)
+        isPaused = !isPaused;
+
+        if (pauseMenuUI != null)
         {
-            InitializeSpawnPosition();
+            pauseMenuUI.SetActive(isPaused);
         }
 
-        // Find player if not cached
-        if (playerObject == null)
-        {
-            playerObject = GameObject.FindGameObjectWithTag("Player");
-        }
+        Time.timeScale = isPaused ? 0f : 1f;
+    }
+    public void ResumeGame()
+    {
+        if (!isPaused) return;
+        TogglePause();
+    }
 
-        if (playerObject == null)
-        {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
-            return;
-        }
+    public void StartGame(string levelName)
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(levelName);
+    }
 
-        // Update spawn position if spawn point is assigned
-        if (playerSpawnPoint != null)
-        {
-            defaultSpawnPosition = playerSpawnPoint.position;
-            defaultSpawnRotation = playerSpawnPoint.rotation;
-        }
+    public void QuitGame()
+    {
+        Application.Quit();
 
-        // Reset player position and rotation
-        playerObject.transform.position = defaultSpawnPosition;
-        playerObject.transform.rotation = defaultSpawnRotation;
-
-        // Reset player's rigidbody velocity if it has one
-        Rigidbody rb = playerObject.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.velocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-        }
-
-        // Reset CharacterController if it exists
-        CharacterController cc = playerObject.GetComponent<CharacterController>();
-        if (cc != null)
-        {
-            cc.enabled = false;
-            cc.enabled = true;
-        }
+    }
+    public void GameOver()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("LoseScreen");
     }
 }

@@ -40,12 +40,12 @@ public class AIAnimationController : MonoBehaviour
             GameManager gm = GameManager.Instance != null ? GameManager.Instance : FindObjectOfType<GameManager>();
             if (gm != null)
             {
-                gm.RespawnPlayer();
+                gm.GameOver();
             }
             else
             {
                 // Fallback: reload scene (same as reference code)
-                SceneManager.LoadScene(0);
+                SceneManager.LoadScene("LoseScreen");
             }
         }
     }
