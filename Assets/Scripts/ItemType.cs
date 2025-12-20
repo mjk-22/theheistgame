@@ -7,6 +7,16 @@ public enum ItemType
     
     EscapeKey,   // key needed to finish the level
     HouseKey,
-    LootItem     // general for now might change later
+    WateringCan,
+    Bowl,
+    Dice,
+    Crown,
+    Phone,
+    Headphone,
+    Hat,
+    Bitcoin,
+    Rake,
+    Backpack,
+    PiggyBank
 
 }
