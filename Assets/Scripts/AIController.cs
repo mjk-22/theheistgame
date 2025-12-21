@@ -3,6 +3,11 @@ using UnityEngine.AI;
 
 public class AIController : MonoBehaviour
 {
+
+    //audio
+   private EnemyAudioController enemyAudio;
+    private bool roarStarted = false;
+
     public NavMeshAgent Agent { get; private set; }
     public AIAnimationController aiAnimationController { get; private set; }
     public StateMachine StateMachine { get; private set; }
@@ -73,6 +78,12 @@ public class AIController : MonoBehaviour
         StateMachine.AddState(new SearchState(this));
 
         StateMachine.TransitionToState(StateType.Idle);
+
+        enemyAudio = GetComponent<EnemyAudioController>();
+        if (enemyAudio != null && enemyAudio.player == null && Player != null)
+        {
+            enemyAudio.player = Player;
+        }
     }
 
     void Update()
@@ -121,6 +132,7 @@ public class AIController : MonoBehaviour
             {
                 lastSeenTime = Time.time;
                 RememberPlayerPosition(hit.point);
+                TriggerRoarOnce();
                 return true;
             }
             
@@ -158,6 +170,7 @@ public class AIController : MonoBehaviour
         {
             lastSeenTime = Time.time;
             RememberPlayerPosition(targetPosition);
+            TriggerRoarOnce();
             return true;
         }
 
@@ -170,6 +183,38 @@ public class AIController : MonoBehaviour
 
         return false;
     }
+
+    private void TriggerRoarOnce()
+    {
+        if (roarStarted) return;
+        roarStarted = true;
+
+        if (Player != null)
+        {
+            var playerAudio = Player.GetComponent<PlayerAudioController>();
+            playerAudio?.PlayGasp();
+        }
+
+        if (enemyAudio != null)
+        {
+            enemyAudio.RoarThenChase(() =>
+            {
+                if (StateMachine != null)
+                {
+                    StateMachine.TransitionToState(StateType.Chase);
+                }
+            });
+        }
+        else
+        {
+            // Safety fallback
+            if (StateMachine != null)
+            {
+                StateMachine.TransitionToState(StateType.Chase);
+            }
+        }
+    }
+
 
     public bool CheckHandsCollision(out GameObject collidedObject, string Tag)
     {
