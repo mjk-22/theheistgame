@@ -79,7 +79,11 @@ Material:
     - _ZWrite: 1
     m_Colors:
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     - _Color: {r: 0.5943396, g: 0.047659315, b: 0.047659315, a: 1}
+=======
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+>>>>>>> Stashed changes
 =======
     - _Color: {r: 1, g: 1, b: 1, a: 1}
 >>>>>>> Stashed changes
