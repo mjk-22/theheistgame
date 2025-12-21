@@ -8,12 +8,14 @@ public class AIAnimationController : MonoBehaviour
     public Animator animator { get; private set; }
     private AIController aiController;
     private NavMeshAgent agent;
+    private EnemyAudioController enemyAudio;
 
     void Awake()
     {
         animator = GetComponent<Animator>();
         aiController = GetComponent<AIController>();
         agent = GetComponent<NavMeshAgent>();
+        enemyAudio = GetComponent<EnemyAudioController>();
     }
     void Update()
     {
@@ -37,6 +39,7 @@ public class AIAnimationController : MonoBehaviour
         if (aiController.CheckHandsCollision(out objectHit, "Player"))
         {
             // Try to respawn using GameManager if available
+            enemyAudio?.PlayAttackSfx();
             GameManager gm = GameManager.Instance != null ? GameManager.Instance : FindObjectOfType<GameManager>();
             if (gm != null)
             {
