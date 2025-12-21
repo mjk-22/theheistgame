@@ -20,7 +20,19 @@ public class GameManager : MonoBehaviour
    
     public GameObject pauseMenuUI;   
     private bool isPaused = false;
+    private CursorLockMode prePauseLockState = CursorLockMode.None;
+    private bool prePauseCursorVisible = true;
+    public static bool IsPaused => Instance != null && Instance.isPaused;
 
+    //Settings UI
+    public GameObject settingsMenuUI;
+    public Slider volumeSlider;
+    public Slider brightnessSlider;
+
+    //Lighting
+    public Light mainLight;
+    public float minLightIntensity = 0.2f;
+    public float maxLightIntensity = 2.0f;
 
     private void Awake()
     {
@@ -32,6 +44,25 @@ public class GameManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
         UpdateInventoryUI();
+
+        // Volume slider
+        if (volumeSlider != null)
+        {
+            volumeSlider.value = AudioListener.volume;
+            volumeSlider.onValueChanged.AddListener(SetMasterVolume);
+        }
+
+        // Brightness slider
+        if (brightnessSlider != null && mainLight != null)
+        {
+            float t = Mathf.InverseLerp(minLightIntensity, maxLightIntensity, mainLight.intensity);
+            brightnessSlider.value = t;
+            brightnessSlider.onValueChanged.AddListener(SetBrightness);
+        }
+
+        if (settingsMenuUI != null)
+            settingsMenuUI.SetActive(false);
+            
     }
 
     private void Update()
@@ -83,13 +114,29 @@ public class GameManager : MonoBehaviour
     {
         isPaused = !isPaused;
 
+        if (!isPaused && settingsMenuUI != null)
+            settingsMenuUI.SetActive(false);
+
         if (pauseMenuUI != null)
-        {
             pauseMenuUI.SetActive(isPaused);
+
+        if (isPaused)
+        {
+            prePauseLockState = Cursor.lockState;
+            prePauseCursorVisible = Cursor.visible;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = prePauseLockState;
+            Cursor.visible = prePauseCursorVisible;
         }
 
+        AudioListener.pause = isPaused;
         Time.timeScale = isPaused ? 0f : 1f;
     }
+
     public void ResumeGame()
     {
         if (!isPaused) return;
@@ -100,6 +147,29 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(levelName);
+    }
+
+    public void SetMasterVolume(float value)
+    {
+        AudioListener.volume = Mathf.Clamp01(value);
+    }
+
+    public void SetBrightness(float value01)
+    {
+        if (mainLight == null) return;
+        mainLight.intensity = Mathf.Lerp(minLightIntensity, maxLightIntensity, Mathf.Clamp01(value01));
+    }
+
+    public void OpenSettings()
+    {
+        if (settingsMenuUI != null) settingsMenuUI.SetActive(true);
+        if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
+    }
+
+    public void CloseSettings()
+    {
+        if (settingsMenuUI != null) settingsMenuUI.SetActive(false);
+        if (pauseMenuUI != null) pauseMenuUI.SetActive(true);
     }
 
     public void QuitGame()
