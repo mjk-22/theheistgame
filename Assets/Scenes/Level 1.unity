@@ -3021,6 +3021,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemsNeededForLevel: 5
   scoreText: {fileID: 1549433085}
+  itemsText: {fileID: 0}
+  pauseMenuUI: {fileID: 0}
   itemsText: {fileID: 1410853351}
   pauseMenuUI: {fileID: 996874889}
   settingsMenuUI: {fileID: 0}
