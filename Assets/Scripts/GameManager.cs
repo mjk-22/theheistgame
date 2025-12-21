@@ -65,6 +65,16 @@ public class GameManager : MonoBehaviour
         return (itemsCollected / (float)itemsNeededForLevel) * 100f;
     }
 
+    public int GetItemsCollected()
+    {
+        return itemsCollected;
+    }
+
+    public int GetItemsNeeded()
+    {
+        return itemsNeededForLevel;
+    }
+
     private void UpdateInventoryUI()
     {
         if (scoreText != null)
@@ -89,6 +99,20 @@ public class GameManager : MonoBehaviour
         }
 
         Time.timeScale = isPaused ? 0f : 1f;
+
+        // Handle cursor visibility and lock state
+        if (isPaused)
+        {
+            // Show and unlock cursor when paused
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else
+        {
+            // Hide and lock cursor when resuming
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
     public void ResumeGame()
     {
