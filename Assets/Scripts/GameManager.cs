@@ -44,12 +44,15 @@ public class GameManager : MonoBehaviour
 
     //inventory
     public void RegisterItemPickup(ItemType itemType)
-    {
-        ownedItems.Add(itemType);
-        itemsCollected++;
+{
+    ownedItems.Add(itemType);
+    itemsCollected++;
 
-        UpdateInventoryUI();
-    }
+    UpdateInventoryUI();
+
+    FindObjectOfType<InventoryUI>()?.Refresh(); 
+}
+
 
     public bool HasItem(ItemType itemType)
     {
