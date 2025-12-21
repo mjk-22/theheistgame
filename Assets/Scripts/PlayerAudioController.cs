@@ -8,6 +8,9 @@ public class PlayerAudioController : MonoBehaviour
 
     [Header("Running Loop")]
     public AudioClip runLoop;
+
+    [Header("Walking Loop")]
+    public AudioClip walkLoop;
     public float minMoveSpeed = 0.2f;
 
     [Header("Reaction")]
@@ -48,20 +51,30 @@ public class PlayerAudioController : MonoBehaviour
         v.y = 0f;
         bool isMoving = v.magnitude > minMoveSpeed;
 
+        bool isForwardInput = Input.GetKey(KeyCode.W);
         bool isRunningInput =
             (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) &&
-            Input.GetKey(KeyCode.W);
+            isForwardInput;
+        bool isWalkingInput = isForwardInput && !isRunningInput;
 
-        bool shouldPlayRun = isMoving && isRunningInput;
+        AudioClip desiredClip = null;
+        if (isMoving && isRunningInput && runLoop != null)
+            desiredClip = runLoop;
+        else if (isMoving && isWalkingInput && walkLoop != null)
+            desiredClip = walkLoop;
 
-        if (shouldPlayRun)
+        if (desiredClip != null)
         {
-            if (runLoop != null && runSource.clip != runLoop) runSource.clip = runLoop;
+            if (runSource.clip != desiredClip)
+            {
+                runSource.Stop();
+                runSource.clip = desiredClip;
+            }
             if (!runSource.isPlaying) runSource.Play();
         }
         else
         {
-            if (runSource.isPlaying) runSource.Stop(); // only stops the loop now
+            if (runSource.isPlaying) runSource.Stop(); // stop immediately when not moving
         }
     }
 

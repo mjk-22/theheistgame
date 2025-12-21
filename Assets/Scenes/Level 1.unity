@@ -2146,7 +2146,7 @@ RectTransform:
   m_Father: {fileID: 1489110098}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4630,7 +4630,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &996874890
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4949,7 +4949,7 @@ RectTransform:
   m_Father: {fileID: 590276591}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5164,6 +5164,7 @@ MonoBehaviour:
   runSource: {fileID: 1146871900}
   oneShotSource: {fileID: 1146871898}
   runLoop: {fileID: 8300000, guid: f1808c736c2319647a8108212452c700, type: 3}
+  walkLoop: {fileID: 8300000, guid: ec27c8a672e50b846994ebe25f19d540, type: 3}
   minMoveSpeed: 0.2
   gaspClip: {fileID: 8300000, guid: dad9459acb825964986029530ba1b0a7, type: 3}
 --- !u!82 &1146871900
@@ -8048,7 +8049,7 @@ RectTransform:
   m_Father: {fileID: 425584007}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8469,7 +8470,7 @@ RectTransform:
   m_Father: {fileID: 324246747}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
