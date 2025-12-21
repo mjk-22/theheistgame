@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     private bool isPaused = false;
     private CursorLockMode prePauseLockState = CursorLockMode.None;
     private bool prePauseCursorVisible = true;
+    public static bool IsPaused => Instance != null && Instance.isPaused;
 
     //Settings UI
     public GameObject settingsMenuUI;
@@ -132,6 +133,7 @@ public class GameManager : MonoBehaviour
             Cursor.visible = prePauseCursorVisible;
         }
 
+        AudioListener.pause = isPaused;
         Time.timeScale = isPaused ? 0f : 1f;
     }
 
