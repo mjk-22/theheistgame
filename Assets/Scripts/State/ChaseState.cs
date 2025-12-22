@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 public class ChaseState : IState
 {
     private AIController aiController;
@@ -16,18 +17,27 @@ public class ChaseState : IState
 
     public void Enter()
     {
-        lastSeenTime = Time.time;
-        wasSeeingPlayer = false;
-        // Ensure agent is moving
-        if (aiController.Agent != null)
+        var agent = aiController.Agent;
+        if (agent == null) return;
+
+        if (!agent.isOnNavMesh)
         {
-            aiController.Agent.isStopped = false;
+            if (NavMesh.SamplePosition(agent.transform.position, out var hit, 5f, NavMesh.AllAreas))
+                agent.Warp(hit.position);
+            else
+                return;
         }
-        // No animations, so no need to set any animator parameters
+
+        aiController.Agent.isStopped = false;
+
+        if (aiController.Player != null)
+            agent.SetDestination(aiController.Player.position);
     }
 
     public void Execute()
     {
+        var agent = aiController.Agent;
+        if (agent == null || !agent.isOnNavMesh) return;
         if (aiController.Agent == null)
         {
             return;
@@ -74,7 +84,7 @@ public class ChaseState : IState
         {
             // Chase directly to player
             aiController.Agent.isStopped = false;
-            aiController.Agent.destination = aiController.Player.position;
+            aiController.Agent.SetDestination(aiController.Player.position);
         }
         else if (shouldContinueChasing)
         {
