@@ -41,7 +41,7 @@ public class ThirdPersonCamera : MonoBehaviour
     void LateUpdate()
     {
         if (target == null) return;
-        if (GameManager.IsPaused) return;
+        if (PauseManager.IsPaused) return;
 
         // Mouse input
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;

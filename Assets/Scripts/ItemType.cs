@@ -6,7 +6,8 @@ public enum ItemType
 {
     
     EscapeKey,   // key needed to finish the level
-    HouseKey,
+    HouseKeylvl1,
+    HouseKeylvl2,
     WateringCan,
     Bowl,
     Dice,

@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public int totalItemsInGame  = 12;
     public Text scoreText;
     public Text itemsText;
+    
 
     // items we have
     private HashSet<ItemType> ownedItems = new HashSet<ItemType>();
@@ -18,21 +19,7 @@ public class GameManager : MonoBehaviour
     // how many items we picked up in total 
     private int itemsCollected = 0;
    
-    public GameObject pauseMenuUI;   
-    private bool isPaused = false;
-    private CursorLockMode prePauseLockState = CursorLockMode.None;
-    private bool prePauseCursorVisible = true;
-    public static bool IsPaused => Instance != null && Instance.isPaused;
-
-    //Settings UI
-    public GameObject settingsMenuUI;
-    public Slider volumeSlider;
-    public Slider brightnessSlider;
-
-    //Lighting
-    public Light mainLight;
-    public float minLightIntensity = 0.2f;
-    public float maxLightIntensity = 2.0f;
+  
 
     private void Awake()
     {
@@ -45,26 +32,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
          SceneManager.sceneLoaded += OnSceneLoaded;
         
-        UpdateInventoryUI();
-
-        // Volume slider
-        if (volumeSlider != null)
-        {
-            volumeSlider.value = AudioListener.volume;
-            volumeSlider.onValueChanged.AddListener(SetMasterVolume);
-        }
-
-        // Brightness slider
-        if (brightnessSlider != null && mainLight != null)
-        {
-            float t = Mathf.InverseLerp(minLightIntensity, maxLightIntensity, mainLight.intensity);
-            brightnessSlider.value = t;
-            brightnessSlider.onValueChanged.AddListener(SetBrightness);
-        }
-
-        if (settingsMenuUI != null)
-            settingsMenuUI.SetActive(false);
-            
+        UpdateInventoryUI();   
     }
      private void OnDestroy()
     {
@@ -76,10 +44,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            TogglePause();
-        }
+      
     }
 
     //inventory
@@ -128,71 +93,13 @@ public class GameManager : MonoBehaviour
         }
     }
  
-    // pause menu 
-    public void TogglePause()
-    {
-        SetPaused(!isPaused);
-    }
-
-    public void ResumeGame()
-    {
-        SetPaused(false);
-    }
-
-    private void SetPaused(bool paused)
-    {
-        isPaused = paused;
-
-        if (!isPaused && settingsMenuUI != null)
-            settingsMenuUI.SetActive(false);
-
-        if (pauseMenuUI != null)
-            pauseMenuUI.SetActive(isPaused);
-
-        if (isPaused)
-        {
-            prePauseLockState = Cursor.lockState;
-            prePauseCursorVisible = Cursor.visible;
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-        else
-        {
-            Cursor.lockState = prePauseLockState;
-            Cursor.visible = prePauseCursorVisible;
-        }
-
-        AudioListener.pause = isPaused;
-        Time.timeScale = isPaused ? 0f : 1f;
-    }
 
     public void StartGame(string levelName)
     {
         Time.timeScale = 1f;
+         if (GameManager.Instance != null)
+        GameManager.Instance.ResetRun();
         SceneManager.LoadScene(levelName);
-    }
-
-    public void SetMasterVolume(float value)
-    {
-        AudioListener.volume = Mathf.Clamp01(value);
-    }
-
-    public void SetBrightness(float value01)
-    {
-        if (mainLight == null) return;
-        mainLight.intensity = Mathf.Lerp(minLightIntensity, maxLightIntensity, Mathf.Clamp01(value01));
-    }
-
-    public void OpenSettings()
-    {
-        if (settingsMenuUI != null) settingsMenuUI.SetActive(true);
-        if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
-    }
-
-    public void CloseSettings()
-    {
-        if (settingsMenuUI != null) settingsMenuUI.SetActive(false);
-        if (pauseMenuUI != null) pauseMenuUI.SetActive(true);
     }
 
     public void QuitGame()
@@ -209,6 +116,7 @@ public class GameManager : MonoBehaviour
      private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
          UpdateInventoryUI();
+         
     }
 
     public void SetHUD(Text newScoreText, Text newItemsText)
@@ -217,4 +125,12 @@ public class GameManager : MonoBehaviour
         itemsText = newItemsText;
         UpdateInventoryUI();
     }
+    public void ResetRun()
+{
+    ownedItems.Clear();
+    itemsCollected = 0;
+    UpdateInventoryUI();
+    FindObjectOfType<InventoryUI>()?.Refresh();
+}
+
 }
