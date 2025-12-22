@@ -3023,8 +3023,6 @@ MonoBehaviour:
   scoreText: {fileID: 1549433085}
   itemsText: {fileID: 0}
   pauseMenuUI: {fileID: 0}
-  itemsText: {fileID: 1410853351}
-  pauseMenuUI: {fileID: 996874889}
   settingsMenuUI: {fileID: 0}
   volumeSlider: {fileID: 1574848552}
   brightnessSlider: {fileID: 1781275916}
@@ -5825,6 +5823,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8835409689826365435, guid: 116a4ac396b18b04ba3fcf79c516eb86, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 31b63c71af8d7ce4783b290e8f902e9e, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
