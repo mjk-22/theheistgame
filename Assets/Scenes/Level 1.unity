@@ -3022,7 +3022,7 @@ MonoBehaviour:
   itemsNeededForLevel: 5
   scoreText: {fileID: 1549433085}
   itemsText: {fileID: 0}
-  pauseMenuUI: {fileID: 0}
+  pauseMenuUI: {fileID: 996874889}
   settingsMenuUI: {fileID: 0}
   volumeSlider: {fileID: 1574848552}
   brightnessSlider: {fileID: 1781275916}
@@ -5740,7 +5740,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   requiredKey: 1
-  nextSceneName: Level2
+  nextSceneName: Level 2
   interactUI: {fileID: 0}
   needKeyUI: {fileID: 0}
 --- !u!1001 &1209037819
@@ -8390,7 +8390,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.06666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 686dec3f1711eee4cab63f39dded5644, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 0de23e5ac51a95345b23ed9de29dc01e, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1001 &1596879403
 PrefabInstance:
@@ -10396,7 +10396,7 @@ Transform:
   m_GameObject: {fileID: 2114487918}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.1, z: 8.87}
+  m_LocalPosition: {x: 5.87, y: 2.1, z: 3.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

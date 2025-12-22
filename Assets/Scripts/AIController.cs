@@ -40,6 +40,7 @@ public class AIController : MonoBehaviour
     public float stuckSpeedThreshold = 0.05f;
     public float stuckDuration = 2f;
     private float stuckTimer;
+    private bool triedSnapToNavMesh = false;
 
 
     // Add State Machine code Here
@@ -310,6 +311,13 @@ public class AIController : MonoBehaviour
             return;
         }
 
+        // ✅ Prevent errors when agent is off NavMesh
+        if (!Agent.isOnNavMesh)
+        {
+            stuckTimer = 0f;
+            return;
+        }
+
         bool barelyMoving = Agent.velocity.magnitude <= stuckSpeedThreshold;
         bool stillFarFromGoal = Agent.remainingDistance > Agent.stoppingDistance + 0.1f;
 
@@ -317,9 +325,7 @@ public class AIController : MonoBehaviour
         {
             stuckTimer += Time.deltaTime;
             if (stuckTimer >= stuckDuration)
-            {
                 HandleStuck();
-            }
         }
         else
         {
@@ -329,6 +335,8 @@ public class AIController : MonoBehaviour
 
     private void HandleStuck()
     {
+        if (Agent == null || !Agent.isOnNavMesh) return;
+
         stuckTimer = 0f;
         Agent.ResetPath();
         transform.Rotate(0f, 180f, 0f);
@@ -343,7 +351,7 @@ public class AIController : MonoBehaviour
         {
             if (TryGetLastKnownPlayerPosition(out Vector3 lastPosition))
             {
-                Agent.destination = lastPosition;
+                Agent.SetDestination(lastPosition);
                 StateMachine.TransitionToState(StateType.Search);
             }
             else
