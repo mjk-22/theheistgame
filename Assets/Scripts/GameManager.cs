@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     // items needed for full score
-    public int itemsNeededForLevel = 5;
+    public int totalItemsInGame  = 12;
     public Text scoreText;
     public Text itemsText;
 
@@ -43,6 +43,8 @@ public class GameManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+         SceneManager.sceneLoaded += OnSceneLoaded;
+        
         UpdateInventoryUI();
 
         // Volume slider
@@ -63,6 +65,13 @@ public class GameManager : MonoBehaviour
         if (settingsMenuUI != null)
             settingsMenuUI.SetActive(false);
             
+    }
+     private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
     }
 
     private void Update()
@@ -92,8 +101,8 @@ public class GameManager : MonoBehaviour
 
     public float GetScorePercent()
     {
-        if (itemsNeededForLevel <= 0) return 0f;
-        return (itemsCollected / (float)itemsNeededForLevel) * 100f;
+        if (totalItemsInGame  <= 0) return 0f;
+        return (itemsCollected / (float)totalItemsInGame ) * 100f;
     }
 
     public int GetItemsCollected()
@@ -103,14 +112,14 @@ public class GameManager : MonoBehaviour
 
     public int GetItemsNeeded()
     {
-        return itemsNeededForLevel;
+        return totalItemsInGame ;
     }
 
     private void UpdateInventoryUI()
     {
         if (scoreText != null)
         {
-            scoreText.text = $"Score: {itemsCollected} / {itemsNeededForLevel}";
+            scoreText.text = $"Score: {itemsCollected} / {totalItemsInGame }";
         }
 
         if (itemsText != null)
@@ -195,5 +204,17 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("LoseScreen");
+    }
+
+     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+         UpdateInventoryUI();
+    }
+
+    public void SetHUD(Text newScoreText, Text newItemsText)
+    {
+        scoreText = newScoreText;
+        itemsText = newItemsText;
+        UpdateInventoryUI();
     }
 }
