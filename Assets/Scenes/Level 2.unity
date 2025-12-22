@@ -9037,6 +9037,60 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6cdd667aa0034cd4dadc8d58a65fb098, type: 3}
+--- !u!1 &1454753319
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1454753321}
+  - component: {fileID: 1454753320}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1454753320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1454753319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0c6a6dc02c7cb34b96e78cf4dd98651, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  totalItemsInGame: 12
+  scoreText: {fileID: 1549433085}
+  itemsText: {fileID: 1410853351}
+  pauseMenuUI: {fileID: 886201365}
+  settingsMenuUI: {fileID: 0}
+  volumeSlider: {fileID: 1759170969}
+  brightnessSlider: {fileID: 756940725}
+  mainLight: {fileID: 1593585539}
+  minLightIntensity: 0.2
+  maxLightIntensity: 2
+--- !u!4 &1454753321
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1454753319}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1471163649
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12784,6 +12838,7 @@ SceneRoots:
   - {fileID: 1042532919}
   - {fileID: 1593585540}
   - {fileID: 1365664005}
+  - {fileID: 1454753321}
   - {fileID: 99604878}
   - {fileID: 1708851747}
   - {fileID: 346825000}
