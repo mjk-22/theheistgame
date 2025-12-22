@@ -122,7 +122,17 @@ public class GameManager : MonoBehaviour
     // pause menu 
     public void TogglePause()
     {
-        isPaused = !isPaused;
+        SetPaused(!isPaused);
+    }
+
+    public void ResumeGame()
+    {
+        SetPaused(false);
+    }
+
+    private void SetPaused(bool paused)
+    {
+        isPaused = paused;
 
         if (!isPaused && settingsMenuUI != null)
             settingsMenuUI.SetActive(false);
@@ -145,26 +155,6 @@ public class GameManager : MonoBehaviour
 
         AudioListener.pause = isPaused;
         Time.timeScale = isPaused ? 0f : 1f;
-
-        // Handle cursor visibility and lock state
-        if (isPaused)
-        {
-            // Show and unlock cursor when paused
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-        }
-        else
-        {
-            // Hide and lock cursor when resuming
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-    }
-
-    public void ResumeGame()
-    {
-        if (!isPaused) return;
-        TogglePause();
     }
 
     public void StartGame(string levelName)
