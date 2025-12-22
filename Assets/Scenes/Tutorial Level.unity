@@ -2401,6 +2401,12 @@ MonoBehaviour:
   scoreText: {fileID: 1549433085}
   itemsText: {fileID: 1410853351}
   pauseMenuUI: {fileID: 996874889}
+  settingsMenuUI: {fileID: 0}
+  volumeSlider: {fileID: 0}
+  brightnessSlider: {fileID: 0}
+  mainLight: {fileID: 0}
+  minLightIntensity: 0.2
+  maxLightIntensity: 2
 --- !u!4 &654494069
 Transform:
   m_ObjectHideFlags: 0
@@ -6879,7 +6885,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.06666667
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 686dec3f1711eee4cab63f39dded5644, type: 2}
   m_BuildHeightMesh: 0
@@ -7150,7 +7156,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1680700739
 RectTransform:
   m_ObjectHideFlags: 0
