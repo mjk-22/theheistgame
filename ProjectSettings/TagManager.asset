@@ -15,9 +15,9 @@ TagManager:
   - Enemy
   - Wall
   - Floor
-  - 
-  - 
-  - 
+  - Ground_Yard
+  - Ground_House
+  - Obstacle
   - 
   - 
   - 
