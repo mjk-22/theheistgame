@@ -3022,8 +3022,6 @@ MonoBehaviour:
   itemsNeededForLevel: 5
   scoreText: {fileID: 1549433085}
   itemsText: {fileID: 0}
-  pauseMenuUI: {fileID: 0}
-  itemsText: {fileID: 1410853351}
   pauseMenuUI: {fileID: 996874889}
   settingsMenuUI: {fileID: 0}
   volumeSlider: {fileID: 1574848552}
@@ -5734,7 +5732,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   requiredKey: 1
-  nextSceneName: Level2
+  nextSceneName: Level 2
   interactUI: {fileID: 0}
   needKeyUI: {fileID: 0}
 --- !u!1001 &1209037819

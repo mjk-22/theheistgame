@@ -46,7 +46,7 @@ public class WinScreenManager : MonoBehaviour
     public void StartGame()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("Level1");
+        SceneManager.LoadScene("Level 1");
     }
 
     public void ReturnToMainMenu()

@@ -24,13 +24,13 @@ public class MenuManager : MonoBehaviour
     public void StartGame()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("Level1");
+        SceneManager.LoadScene("Level 1");
     }
 
     public void StartTutorial()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("TutorialLevel");
+        SceneManager.LoadScene("Tutorial Level");
     }
 
     public void ReturnToMainMenu()
