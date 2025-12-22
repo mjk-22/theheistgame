@@ -73,7 +73,7 @@ public class LevelExit : MonoBehaviour
         }
 
         float percent = GameManager.Instance.GetScorePercent();
-        Debug.Log($"Level complete! Score: {percent:0}%");
+        Debug.Log($"Level complete! Score: {percent:0}");
 
         if (!string.IsNullOrEmpty(nextSceneName))
         {
