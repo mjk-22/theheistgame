@@ -84,6 +84,12 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        if (GameManager.IsPaused)
+        {
+            jumpRequest = false;
+            return;
+        }
+
         RegisterInput(); // Collect player input
     }
 
@@ -92,6 +98,7 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
+        if (GameManager.IsPaused) return;
         HandleMovement(); // Process movement and physics-based updates
     }
 
