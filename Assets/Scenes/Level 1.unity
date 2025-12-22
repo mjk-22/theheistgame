@@ -3022,11 +3022,7 @@ MonoBehaviour:
   itemsNeededForLevel: 5
   scoreText: {fileID: 1549433085}
   itemsText: {fileID: 0}
-<<<<<<< HEAD
   pauseMenuUI: {fileID: 996874889}
-=======
-  pauseMenuUI: {fileID: 0}
->>>>>>> 71281d371a2dc97698c9c26ccc6db65e33cb833a
   settingsMenuUI: {fileID: 0}
   volumeSlider: {fileID: 1574848552}
   brightnessSlider: {fileID: 1781275916}
