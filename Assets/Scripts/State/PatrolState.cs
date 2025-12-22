@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.AI;
 
 public class PatrolState : IState
 {
@@ -16,10 +17,21 @@ public class PatrolState : IState
 
     public void Enter()
     {
+        var agent = aiController.Agent;
+        if (agent == null) return;
 
-        aiController.Agent.isStopped = false;
+        if (!agent.isOnNavMesh)
+        {
+            if (NavMesh.SamplePosition(agent.transform.position, out var hit, 5f, NavMesh.AllAreas))
+                agent.Warp(hit.position);
+            else
+                return;
+        }
+
+        agent.isStopped = false;
         MoveToNextWaypoint();
     }
+
 
     public void Execute()
     {
@@ -29,22 +41,32 @@ public class PatrolState : IState
             return;
         }
 
-        if (!isWaiting && !aiController.Agent.pathPending && aiController.Agent.remainingDistance <= aiController.Agent.stoppingDistance)
+        var agent = aiController.Agent;
+        if (agent == null || !agent.isOnNavMesh) return;
+
+        if (!isWaiting && !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
             aiController.StartCoroutine(WaitAndAnimate());
         }
-
     }
 
     public void Exit()
     {
-        aiController.Agent.isStopped = false;
+        var agent = aiController.Agent;
+        if (agent == null || !agent.isOnNavMesh) return;
+        agent.isStopped = false;
     }
 
     private IEnumerator WaitAndAnimate()
     {
         isWaiting = true;
-        aiController.Agent.isStopped = true;
+        var agent = aiController.Agent;
+        if (agent == null || !agent.isOnNavMesh)
+        {
+            isWaiting = false;
+            yield break;
+        }
+        agent.isStopped = true;
 
         // Play patrol point animation
         aiController.aiAnimationController.animator.SetTrigger("doScream");
@@ -52,17 +74,21 @@ public class PatrolState : IState
         // Wait for animation duration (1.5 sec here, adjust to your animation length)
         yield return new WaitForSeconds(5);
 
-        aiController.Agent.isStopped = false;
+        if (agent != null && agent.isOnNavMesh)
+            agent.isStopped = false;
         MoveToNextWaypoint();
         isWaiting = false;
     }
 
     private void MoveToNextWaypoint()
     {
-        if (aiController.Waypoints.Length == 0)
+        var agent = aiController.Agent;
+        if (agent == null || !agent.isOnNavMesh) return;
+
+        if (aiController.Waypoints == null || aiController.Waypoints.Length == 0)
             return;
 
-        aiController.Agent.destination = aiController.Waypoints[currentWaypointIndex].position;
+        agent.SetDestination(aiController.Waypoints[currentWaypointIndex].position);
         currentWaypointIndex = (currentWaypointIndex + 1) % aiController.Waypoints.Length;
     }
 }
