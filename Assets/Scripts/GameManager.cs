@@ -38,12 +38,15 @@ public class GameManager : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject);
-            return;
+            // Keep scene-specific UI references by replacing the old instance.
+            ownedItems = new HashSet<ItemType>(Instance.ownedItems);
+            itemsCollected = Instance.itemsCollected;
+            totalItemsInGame = Instance.totalItemsInGame;
+            Destroy(Instance.gameObject);
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-         SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
         
         UpdateInventoryUI();
 
