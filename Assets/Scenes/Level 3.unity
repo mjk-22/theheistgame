@@ -894,8 +894,8 @@ Transform:
   m_GameObject: {fileID: 127454383}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -8.2829, y: 3.8, z: 14.5}
-  m_LocalScale: {x: 1, y: 5.3049, z: 12.016161}
+  m_LocalPosition: {x: -10.1386, y: 3.8, z: 14.5}
+  m_LocalScale: {x: 1, y: 5.3049, z: 8.304436}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2506,8 +2506,8 @@ Transform:
   m_GameObject: {fileID: 433337475}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.41, y: 3.7524, z: -0.0039}
-  m_LocalScale: {x: 1, y: 5.3049, z: 28.580025}
+  m_LocalPosition: {x: 14.41, y: 3.7524, z: -1.2515}
+  m_LocalScale: {x: 1, y: 5.3049, z: 26.08384}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2958,6 +2958,12 @@ MonoBehaviour:
   scoreText: {fileID: 1549433085}
   itemsText: {fileID: 1410853351}
   pauseMenuUI: {fileID: 996874889}
+  settingsMenuUI: {fileID: 0}
+  volumeSlider: {fileID: 0}
+  brightnessSlider: {fileID: 0}
+  mainLight: {fileID: 0}
+  minLightIntensity: 0.2
+  maxLightIntensity: 2
 --- !u!4 &654494069
 Transform:
   m_ObjectHideFlags: 0
@@ -4606,6 +4612,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: -5827929165127460268, guid: 116a4ac396b18b04ba3fcf79c516eb86, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 39f74cad0877035469ef209204e4aa65, type: 2}
     - target: {fileID: -5401471579541604875, guid: 116a4ac396b18b04ba3fcf79c516eb86, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -4630,6 +4640,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8835409689826365435, guid: 116a4ac396b18b04ba3fcf79c516eb86, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 31b63c71af8d7ce4783b290e8f902e9e, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6963,7 +6977,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b70b677f980d82740be45a07befd0511, type: 2}
+  - {fileID: 2100000, guid: 0ff8d25134281ad419a1aa8bb605cc08, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7035,7 +7049,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.06666667
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 686dec3f1711eee4cab63f39dded5644, type: 2}
   m_BuildHeightMesh: 0
