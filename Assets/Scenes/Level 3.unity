@@ -3428,8 +3428,8 @@ MonoBehaviour:
   itemsText: {fileID: 1410853351}
   pauseMenuUI: {fileID: 886201365}
   settingsMenuUI: {fileID: 0}
-  volumeSlider: {fileID: 0}
-  brightnessSlider: {fileID: 0}
+  volumeSlider: {fileID: 1759170969}
+  brightnessSlider: {fileID: 756940725}
   mainLight: {fileID: 1593585539}
   minLightIntensity: 0.2
   maxLightIntensity: 2
