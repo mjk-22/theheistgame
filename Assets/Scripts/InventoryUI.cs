@@ -24,7 +24,7 @@ public class InventoryUI : MonoBehaviour
 
     private void Update()
     {
-        // Optional: open/close with I key
+        
         if (Input.GetKeyDown(KeyCode.I))
             Toggle();
     }
@@ -35,7 +35,7 @@ public class InventoryUI : MonoBehaviour
         bool newState = !inventoryPanel.activeSelf;
         inventoryPanel.SetActive(newState);
 
-        if (newState) Refresh(); // update whenever opened
+        if (newState) Refresh(); 
     }
 
     private void BuildGrid()
